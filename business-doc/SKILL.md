@@ -1,6 +1,6 @@
 ---
 name: business-doc
-description: Generates business (non-technical) documentation from an existing codebase. Organizes by feature/user story, includes Mermaid flows, glossary, business rules, KPIs, integrations, compliance, and open questions. Supports parallel analysis with subagents. With the `--frs` flag, generates Software Requirements documentation (RF/RNF) instead — one document per feature — and can convert existing business documentation to FRS via `--frs --from-existing={path}`.
+description: Generates business (non-technical) documentation from an existing codebase. Organizes by feature/user story, includes Mermaid flows, glossary, business rules, KPIs, integrations, compliance, and open questions. Supports parallel analysis with subagents. With the `--features` flag, generates one self-contained document per identified feature following the `feature.md` template (filename = feature name). With the `--frs` flag, generates Software Requirements documentation (RF/RNF) instead — one document per feature — and can convert existing business documentation to FRS via `--frs --from-existing={path}`. The `--language` flag (default `en`) controls the output language.
 ---
 
 # Skill: business-doc
@@ -18,7 +18,7 @@ Written for **business, product, and operations** readers — not developers.
 Invocation:
 
 ```
-business-doc [--output=docs] [--add-code] [--use-subagents=3] [--frs] [--from-existing={path}]
+business-doc [--output=docs] [--add-code] [--use-subagents=3] [--features] [--frs] [--from-existing={path}] [--language=en]
 ```
 
 | Flag | Default | Description |
@@ -26,16 +26,22 @@ business-doc [--output=docs] [--add-code] [--use-subagents=3] [--frs] [--from-ex
 | `--output={path}` | `docs` | Root directory where documentation will be generated. Created if it does not exist. |
 | `--add-code` | `false` (off) | When absent, **forbidden** to cite file paths, classes, functions, endpoints, SQL, snippets. Business language only. When present, allowed to add a `## Technical evidence` block at the end of each document with references. |
 | `--use-subagents={N}` | `3` | Maximum number of parallel subagents to map/analyze features. `0` disables parallelism. |
+| `--features` | `false` (off) | **Per-feature mode**. Documentation **must** be generated **by feature**: **one self-contained document per identified feature**, following the `feature.md` template. The **file name is the feature name** and each file contains the full documentation of that feature (see "Features mode" section). |
 | `--frs` | `false` (off) | **Software Requirements mode**. Generates **only** documents in the FRS pattern (RF / RNF / acceptance criteria / traceability), **one document per feature**. Output structure differs from business mode (see "FRS mode" section). |
 | `--from-existing={path}` | — | Used **together with `--frs`**. Instead of analyzing code, reads **already generated** business documentation at `{path}` (e.g. `docs/`, `documentacao/`) and produces the FRS equivalent. Code is used only for cross-validation and evidence extraction when `--add-code` is also present. |
+| `--language={code}` | `en` | Output language of the documentation (e.g. `en`, `pt`, `pt-BR`, `es`). All generated content — titles, body text, tables, diagram labels — is written in this language. File/folder slugs stay in `kebab-case`. |
 
 If the user does not pass flags, assume the defaults above and **declare** at the start of execution:
 
-> "Generating business documentation in `docs/`, without code evidence, using 3 subagents."
+> "Generating business documentation in `docs/`, without code evidence, using 3 subagents, language `en`."
+
+In Features mode, declare:
+
+> "Generating **per-feature** business documentation in `docs/`, one document per feature following the `feature.md` template, using N subagents, language `<code>`."
 
 In FRS mode, declare:
 
-> "Generating **Software Requirements (FRS)** documentation in `docs/`, one document per feature, using N subagents." (and, if `--from-existing`, "converting from `<path>`").
+> "Generating **Software Requirements (FRS)** documentation in `docs/`, one document per feature, using N subagents, language `<code>`." (and, if `--from-existing`, "converting from `<path>`").
 
 ---
 
@@ -52,6 +58,42 @@ When `--add-code` **is** present:
 
 - Add a `## Technical evidence` section at the end of each document listing files, modules, endpoints, and tests that support the content.
 - The main body stays in business language; code goes **only** in the appendix.
+
+---
+
+## Features mode (`--features`)
+
+When `--features` is present, documentation **must** be generated **by feature**: the skill produces **one self-contained document per identified feature**, instead of splitting each feature into multiple files (`README.md`, `user-stories.md`, etc.).
+
+### Features principles
+- **One feature = one file**, following the `feature.md` template (required).
+- The **file name is the feature name** in `kebab-case` (e.g. `user-management.md`, `recurring-subscription.md`, `order-approval.md`).
+- Each file contains the **identified feature** in full: overview, business objectives, actors, AS-IS, TO-BE, business rules, use cases, conceptual data model, configurable domains, non-functional requirements, out of scope, glossary, references.
+- Files are written entirely from the `feature.md` template — **do not** improvise the structure.
+- Business mode rules still apply: no code in the body unless `--add-code` is present (then add a `## Technical evidence` block at the end of each feature file).
+- Output language follows `--language` (default `en`).
+
+### Output structure in Features mode
+
+```
+{output}/
+├── README.md                            # navigable index linking each feature file
+├── 00-visao-geral.md                    # business objective, context, personas
+├── 01-glossario.md                      # global terms and acronyms
+├── 99-perguntas-abertas.md              # questions, hypotheses, gaps
+└── features/
+    ├── <feature-name-1>.md              # full feature doc (feature.md template)
+    ├── <feature-name-2>.md
+    └── ...
+```
+
+> The per-feature **subfolders** (`features/<slug>/README.md`, `user-stories.md`, `use-cases.md`, `business-rules.md`, `flows.md`, `examples.md`) are **not** generated in Features mode. All of that content is consolidated into the single `features/<feature-name>.md` file. Global macro files `02-processos.md`..`07-conflitos-de-regras.md` are optional in this mode; generate them only if they add executive value, otherwise reference everything from the feature files and `README.md`.
+
+### Templates used in Features mode
+- `feature.md` — one document per feature (required, filename = feature name).
+- `overview.md`, `glossary.md`, `open-questions.md`, `root-readme.md` — reused for the global files.
+
+> `--features` and `--frs` are mutually exclusive. If both are passed, **declare** the conflict and ask the user which one to use before proceeding.
 
 ---
 
@@ -165,7 +207,7 @@ Generate the tree below inside `{output}/` (default `docs/`). For `--frs` mode, 
 - Slug in `kebab-case`, derived from the business name (e.g. `user-management`, `recurring-subscription`, `order-approval`).
 - Group by **business capability**, not technical module. Inspired by market practice (BIAN, DDD Bounded Context, SAFe Capabilities, Event Storming).
 - If a feature has distinct subdomains, create subfolders: `features/payments/pix/`, `features/payments/card/`.
-- File names always in **kebab-case** and **project language** (English by default in this repository).
+- File names always in **kebab-case**. Document **content** is written in the `--language` language (default `en`); slugs/file names stay in `kebab-case` regardless of language.
 
 ---
 
@@ -216,7 +258,7 @@ If `--use-subagents=0`: generate serially, one feature at a time.
 > - Mode: `<business-only | with-technical-evidence>`.
 > - Output: `{output}/features/<slug>/` with `README.md`, `user-stories.md`, `use-cases.md`, `business-rules.md`, `flows.md`, `examples.md`.
 > - Use templates in `.cursor/skills/business-doc/templates/`.
-> - Language: English, simple, no technical jargon.
+> - Language: `<--language>` (default English), simple, no technical jargon.
 > - Include at least one Mermaid diagram in `flows.md`.
 > - Mark each statement as Fact / Hypothesis / Question.
 > - **Do not** invent features without evidence.
@@ -227,6 +269,28 @@ If `--use-subagents=0`: generate serially, one feature at a time.
 - Write root files: `00..06` and `99`.
 - Generate index `README.md` with links to each feature folder.
 - Generate the macro diagram in `02-processos.md`.
+
+### Variation for `--features` mode
+
+**Phase 1 — Reconnaissance** — same as business mode (detect stack, identify business capabilities, produce the feature list).
+
+**Phase 2 — Per-feature generation (parallel)**
+- Each subagent generates **a single file**: `features/<feature-name>.md` (filename = feature name in `kebab-case`) from the `feature.md` template.
+- Features mode subagent base prompt:
+
+  > Generate the **per-feature** business document for feature `<feature-name>`.
+  > - Mode: `<business-only | with-technical-evidence>`.
+  > - Single output: `{output}/features/<feature-name>.md` using template `.cursor/skills/business-doc/templates/feature.md`.
+  > - The file name **is** the feature name (`kebab-case`).
+  > - Fill **all** template sections with the identified feature: overview, objectives, actors, AS-IS, TO-BE, business rules, use cases, data model, configurable domains, RNFs, out of scope, glossary, references.
+  > - Include at least one diagram (Mermaid or ASCII) in the AS-IS/TO-BE sections.
+  > - Mark each statement as Fact / Hypothesis / Question. **Do not** invent content without evidence.
+  > - Language: `<--language>` (default English), simple, no technical jargon.
+  > - Return: extracted rules, candidate KPIs, integrations, questions.
+
+**Phase 3 — Consolidation**
+- Generate `00-visao-geral.md`, `01-glossario.md`, `99-perguntas-abertas.md`, and index `README.md` linking each `features/<feature-name>.md`.
+- Aggregate rules, questions, and conflicts across features; record conflicts in `99-perguntas-abertas.md` (no separate `07-conflitos-de-regras.md` unless it adds executive value).
 
 ### Variation for `--frs` mode
 
@@ -247,7 +311,7 @@ If `--use-subagents=0`: generate serially, one feature at a time.
   > - Mandatory priority: MoSCoW (RF) and Critical/High/Medium/Low (RNF).
   > - IDs: `FUNC-NNN`, `RF-<slug>-NNN`, `RNF-<slug>-NNN`. Fill traceability with `US-*`, `UC-*`, `RN-*` when coming from existing doc.
   > - If `--from-existing`, **do not invent** RF/RNF without traceable origin; gaps become `Q-NNN`.
-  > - Language: English, imperative, unambiguous.
+  > - Language: `<--language>` (default English), imperative, unambiguous.
   > - Return: list of generated RFs and RNFs, questions, RFs without origin (if applicable).
 
 **Phase 3 — Consolidation**
@@ -312,6 +376,7 @@ Right after the header, one **Confidence** line: `High | Medium | Low` — based
 
 Templates live in `.cursor/skills/business-doc/templates/`:
 
+- `feature.md` — used **only** in `--features` mode (one self-contained document per feature; filename = feature name).
 - `feature-readme.md`
 - `user-story.md`
 - `use-case.md`
@@ -413,7 +478,7 @@ Include block:
 - Document without header, owner, or date.
 - Inventing persona, KPI, rule, or integration without evidence.
 - Copying large code blocks in the document body.
-- Writing in a language other than the project uses. Follow the repository language.
+- Writing in a language other than the one set by `--language` (default `en`).
 
 ---
 
@@ -427,6 +492,13 @@ When finished, print in chat:
 3. Totals: rules, stories, use cases, questions.
 4. Top 5 critical questions to validate with stakeholders.
 5. Suggested next steps (validation, owner assignment, review).
+
+**`--features` mode:**
+1. Generated folder (path) and language.
+2. List of generated feature files (`features/<feature-name>.md`).
+3. Totals: features, rules, use cases, questions.
+4. Top 5 critical questions to validate with stakeholders.
+5. Suggested next steps.
 
 **`--frs` mode:**
 1. Generated folder (path) and source (code or `--from-existing={path}`).
