@@ -1,93 +1,60 @@
 # skills
 
-A collection of open-source [Agent Skills](https://github.com/vercel-labs/skills) for AI coding agents (Cursor, Claude Code, Codex, OpenCode, and more).
-
-Each skill lives in its own top-level folder with a `SKILL.md` entry point and optional `templates/`. Install one, several, or all of them with the `skills` CLI.
+Agent Skills for coding agents (Cursor, Claude Code, Codex, OpenCode, and more). Install with the [`skills` CLI](https://github.com/vercel-labs/skills).
 
 ## Skills
 
 | Skill | Description |
 |---|---|
-| [`business-doc`](./business-doc) | Generates business (non-technical) documentation from an existing codebase. Organizes by feature/user story with Mermaid flows, glossary, business rules, KPIs, integrations, compliance, and open questions. Supports parallel subagents and an `--frs` mode for Software Requirements (RF/RNF) docs. |
+| [`business-doc`](./business-doc) | Business documentation from a codebase: features, Mermaid flows, glossary, rules, KPIs, integrations, compliance. Optional `--frs` mode for requirements (RF/RNF). |
+| [`trello`](./trello) | Trello REST API (boards, lists, cards, checklists, members, labels, webhooks, and more) via `curl` / PowerShell wrappers and env-based credentials. |
 
 ## Installation
 
-Skills are installed with the [`skills` CLI](https://www.npmjs.com/package/skills) via `npx`. No global install required.
-
-### Install everything
-
 ```bash
-npx skills add silasvasconcelos/skills
+npx skills add silasvasconcelos/skills --skill trello
 ```
 
-### Install a specific skill
+Replace `trello` with any skill name from the table above.
 
-```bash
-npx skills add silasvasconcelos/skills --skill business-doc
-```
+### Useful options (`skills add`)
 
-### Target specific agents
-
-```bash
-# e.g. Cursor + Claude Code
-npx skills add silasvasconcelos/skills -a cursor -a claude-code
-```
-
-### List available skills without installing
-
-```bash
-npx skills add silasvasconcelos/skills --list
-```
-
-### Other useful flags
-
-| Flag | Description |
+| Option | Description |
 |---|---|
-| `-g, --global` | Install to the user directory instead of the current project. |
-| `-a, --agent <name>` | Target specific agents (e.g. `cursor`, `claude-code`, `codex`). Repeatable. |
-| `-s, --skill <name>` | Install specific skills by name (use `'*'` for all). Repeatable. |
-| `-l, --list` | List available skills without installing. |
-| `--copy` | Copy files instead of symlinking into agent directories. |
-| `-y, --yes` | Skip all confirmation prompts (CI/CD friendly). |
+| `-s, --skill <name>` | Install only the named skill(s). Use `'*'` for all. Repeatable. |
+| `-a, --agent <name>` | Install only to selected agents (e.g. `cursor`, `claude-code`, `codex`). Repeatable. Use `'*'` for all. |
+| `-g, --global` | Install to the user directory (`~/…/skills/`), available across projects. Default: project scope (`./…/skills/`). |
+| `-l, --list` | List skills in the repository without installing. |
 | `--all` | Install all skills to all agents without prompts. |
+| `--copy` | Copy files instead of symlinking (when symlinks are not supported). |
+| `-y, --yes` | Skip confirmation prompts (CI/CD friendly). |
 
-Full CLI reference: [skills CLI docs](https://github.com/vercel-labs/skills).
+Full CLI reference: [vercel-labs/skills](https://github.com/vercel-labs/skills).
 
-## Usage
+### Examples
 
-Once installed, the skill is available to your agent automatically. Trigger it by describing the task in natural language — for example:
+```bash
+# List skills available in this repository
+npx skills add silasvasconcelos/skills --list
 
-> Generate business documentation for this repository.
+# Install to Cursor only
+npx skills add silasvasconcelos/skills --skill business-doc -a cursor
 
-To use flags exposed by a skill, mention them in your prompt:
+# Multiple skills and agents
+npx skills add silasvasconcelos/skills -s business-doc -s trello -a cursor -a claude-code
 
-```text
-Generate business documentation in docs/, with code evidence, using 3 subagents.
-# business-doc → --output=docs --add-code --use-subagents=3
+# Global install, no prompts
+npx skills add silasvasconcelos/skills --skill trello -g -y
+
+# All skills from this repo
+npx skills add silasvasconcelos/skills --all
 ```
 
-See each skill's folder for its full set of flags and behavior.
+### Other commands
 
-## Repository layout
-
-```
-.
-├── README.md
-└── <skill-name>/
-    ├── SKILL.md          # skill entry point (name + description front matter)
-    └── templates/        # optional support files used by the skill
-```
-
-To add a new skill, create a new top-level folder with its own `SKILL.md` and add a row to the [Skills](#skills) table above.
-
-## Contributing
-
-Contributions are welcome. New skills should:
-
-- Live in a dedicated top-level folder named in `kebab-case`.
-- Include a `SKILL.md` with `name` and `description` front matter.
-- Be documented with a row in the [Skills](#skills) table.
-
-## License
-
-MIT
+| Command | Description |
+|---|---|
+| `npx skills list` | List installed skills (`ls`). `-g` for global only; `-a <agent>` to filter by agent. |
+| `npx skills update` | Update installed skills. `-g` / `-p` limit scope; `-y` skips prompts. |
+| `npx skills remove <name>` | Remove a skill (`rm`). `-a`, `-g`, `--all` work like `add`. |
+| `npx skills find [query]` | Search the skills ecosystem ([skills.sh](https://skills.sh)). |
