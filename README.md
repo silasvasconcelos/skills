@@ -8,6 +8,7 @@ Agent Skills for coding agents (Cursor, Claude Code, Codex, OpenCode, and more).
 |---|---|
 | [`business-doc`](./business-doc) | Business documentation from a codebase: features, Mermaid flows, glossary, rules, KPIs, integrations, compliance. Optional `--frs` mode for requirements (RF/RNF). |
 | [`django-superpowers`](./django-superpowers) | Django 5.0+ development: models, views, forms, URLs, admin, auth, security, testing, async, version features (5.0–6.0), plus DRF, SimpleJWT, django-allauth, django-environ, Celery, and Channels. |
+| [`django-unfold`](./django-unfold) | Django Unfold admin theme: install, UNFOLD settings, ModelAdmin, filters, actions, tabs, inlines, widgets, dashboards, third-party integrations, and troubleshooting. |
 | [`trello`](./trello) | Trello REST API (boards, lists, cards, checklists, members, labels, webhooks, and more) via `curl` / PowerShell wrappers and env-based credentials. |
 
 ## Installation
