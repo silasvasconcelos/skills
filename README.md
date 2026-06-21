@@ -7,6 +7,7 @@ Agent Skills for coding agents (Cursor, Claude Code, Codex, OpenCode, and more).
 | Skill | Description |
 |---|---|
 | [`business-doc`](./business-doc) | Business documentation from a codebase: features, Mermaid flows, glossary, rules, KPIs, integrations, compliance. Optional `--frs` mode for requirements (RF/RNF). |
+| [`django-superpowers`](./django-superpowers) | Django 5.0+ development: models, views, forms, URLs, admin, auth, security, testing, async, version features (5.0–6.0), plus DRF, SimpleJWT, django-allauth, django-environ, Celery, and Channels. |
 | [`trello`](./trello) | Trello REST API (boards, lists, cards, checklists, members, labels, webhooks, and more) via `curl` / PowerShell wrappers and env-based credentials. |
 
 ## Installation
