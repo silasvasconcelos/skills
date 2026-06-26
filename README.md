@@ -10,6 +10,7 @@ Agent Skills for coding agents (Cursor, Claude Code, Codex, OpenCode, and more).
 | [`commit`](./commit) | Plans and executes atomic Conventional Commits in dependency order (1–3 files each). Supports `/commit` with `--yes`, `--dry-run`, `--push`, and `--language` for splitting changes and writing commit messages. |
 | [`django-superpowers`](./django-superpowers) | Django 5.0+ development: models, views, forms, URLs, admin, auth, security, testing, async, version features (5.0–6.0), plus DRF, SimpleJWT, django-allauth, django-environ, Celery, and Channels. |
 | [`django-unfold`](./django-unfold) | Django Unfold admin theme: install, UNFOLD settings, ModelAdmin, filters, actions, tabs, inlines, widgets, dashboards, third-party integrations, and troubleshooting. |
+| [`security-check`](./security-check) | Security review of code, APIs, infrastructure, or architecture against OWASP Top 10, CWE Top 25, and secure coding practices. DREAD/CVSS severity, remediation guidance — language and framework agnostic. Covers injection, auth, JWT/OAuth, GraphQL, cloud/IaC, and threat modeling. |
 | [`trello`](./trello) | Trello REST API (boards, lists, cards, checklists, members, labels, webhooks, and more) via `curl` / PowerShell wrappers and env-based credentials. |
 
 ## Installation
