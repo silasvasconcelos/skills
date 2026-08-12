@@ -2,11 +2,12 @@
 name: google-ads
 description: >-
   Google Ads gestão completa — campanhas, grupos, anúncios, palavras-chave,
-  assets, extensões, orçamento, conversões, otimização e relatórios. Use quando
+  assets, extensões, orçamento, conversões, otimização, relatórios e perfis
+  persistentes de negócio (clínica, site, teto padrão, contatos). Use quando
   o usuário mencionar Google Ads, tráfego pago, mídia paga, Performance Max,
   Search, Display, remarketing, CPA, ROAS, termos de pesquisa, clínicas de
-  estética, negócios locais, landing page de anúncio, ou pedir criar, publicar,
-  pausar, editar, analisar ou escalar campanhas.
+  estética, negócios locais, landing page de anúncio, perfil de anunciante, ou
+  pedir criar, publicar, pausar, editar, analisar ou escalar campanhas.
 ---
 
 # Google Ads
@@ -33,6 +34,14 @@ Identificar e usar o que estiver disponível: **browser** (Google Ads, site, con
 
 Preferir dados **atuais** da plataforma ou documentação oficial quando políticas/limites puderem ter mudado.
 
+## Perfis de negócio
+
+Dados confirmados do anunciante persistem em `~/.config/google-ads/profiles/` (um `.md` por negócio). Detalhes: [profiles.md](references/profiles.md).
+
+**Início de sessão (sempre):** listar perfis → se existir, exibir resumo e perguntar qual negócio usar (ou criar novo / sem perfil) → carregar perfil escolhido. Se não existir, coletar normalmente e **oferecer salvar perfil** ao finalizar campanha/anúncio estruturado.
+
+**Gestão:** usuário pode criar, atualizar, enriquecer ou remover perfil — ver [profiles.md](references/profiles.md).
+
 ## Roteamento
 
 | Situação | Referência |
@@ -42,6 +51,7 @@ Preferir dados **atuais** da plataforma ou documentação oficial quando políti
 | Copy, anúncios, assets, imagens, redes sociais | [references/creatives.md](references/creatives.md) |
 | Políticas, estética, landing page, palavras-chave | [references/compliance.md](references/compliance.md) |
 | Relatórios e pós-execução | [references/reports.md](references/reports.md) |
+| Perfis persistentes (criar, listar, atualizar, remover) | [references/profiles.md](references/profiles.md) |
 | Exemplos e evals de trigger | [EXAMPLES.md](EXAMPLES.md) |
 
 ## Branches principais
@@ -60,7 +70,7 @@ Seguir [account-management.md](references/account-management.md) — ciclo **med
 
 ## Coleta mínima (perguntar só o que faltar)
 
-Agrupar perguntas. Antes de campanha nova, cobrir:
+Com **perfil ativo**, usar dados salvos e perguntar só lacunas ou mudanças. Sem perfil, agrupar perguntas. Antes de campanha nova, cobrir:
 
 - **Empresa:** nome, segmento, cidade, região, site/landing, Google Business Profile se relevante.
 - **Oferta:** o quê anunciar, prioridade, benefício/diferencial **confirmados**, promoção/preço divulgável.
