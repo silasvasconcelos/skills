@@ -4,9 +4,17 @@ Fluxo completo antes de investir. Estratégia antes da execução.
 
 ## Etapas
 
+### 0 — Perfil
+
+Seguir [profiles.md](profiles.md#início-de-cada-sessão-obrigatório): listar perfis, selecionar negócio ou criar novo / sem perfil.
+
+**Conclusão:** perfil ativo carregado ou decisão explícita de seguir sem perfil.
+
 ### 1 — Coleta
 
 Obter empresa, serviço, região, site, contato, objetivo, **teto**, público, diferenciais, oferta, preferência de imagem.
+
+Com perfil ativo: exibir o que já está salvo; coletar só lacunas e confirmar dados que podem ter mudado.
 
 **Conclusão:** lacunas críticas preenchidas ou explicitadas como pendência bloqueante.
 
@@ -72,6 +80,13 @@ Perguntar se deseja publicação alinhada para redes sociais. Se sim → [creati
 ### 11 — Gestão contínua
 
 Quando solicitado: desempenho, termos, conversões, CPA, qualidade de leads, desperdício, oportunidades → [account-management.md](account-management.md).
+
+### 12 — Perfil (após entrega)
+
+- **Sem perfil** na etapa 0: oferecer criar com dados **confirmados** desta campanha → [profiles.md](profiles.md#criar-arquivo).
+- **Com perfil ativo:** perguntar se deseja enriquecer com novos dados confirmados → [profiles.md](profiles.md#atualizar--enriquecer).
+
+**Conclusão:** perfil salvo ou atualizado, ou usuário declinou explicitamente.
 
 <a id="checklist"></a>
 

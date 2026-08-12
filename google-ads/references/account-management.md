@@ -1,5 +1,11 @@
 # Gestão de conta existente
 
+## Perfil
+
+Antes da revisão: [profiles.md](profiles.md#início-de-cada-sessão-obrigatório) — selecionar negócio. Usar teto padrão e contatos do perfil como base; confirmar se ainda válidos.
+
+Após diagnóstico: oferecer enriquecer perfil com descobertas **confirmadas**.
+
 ## Fluxo de revisão
 
 1. **Validar objetivo** — resultado comercial desejado.
