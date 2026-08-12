@@ -12,7 +12,10 @@ Cenários fictícios para calibrar execução e trigger. Dados de exemplo — nu
 
 ### Resposta esperada (primeira rodada)
 
-Agente **não** cria campanha ainda. Agrupa coleta faltante:
+Agente **não** cria campanha ainda.
+
+1. Verificar perfis em `~/.config/google-ads/profiles/` — se existir, listar e perguntar qual clínica usar antes da coleta.
+2. Agrupar coleta faltante:
 
 - **Confirmado** (usuário): segmento, cidade, site, serviços citados, objetivo WhatsApp.
 - **Pendente:** teto (diário/mensal + período), região exata (Campinas inteira ou raio?), número WhatsApp + DDD, horário atendimento, serviços realmente oferecidos (confirmar no site), diferencial divulgável, imagem própria ou gerar?
@@ -187,6 +190,9 @@ Use para testar se o skill dispara quando deve e fica quieto quando não deve.
 | T8 | "Quero remarketing no Google Ads" | estratégia + compliance |
 | T9 | "ROAS da loja caiu no mês" | account-management |
 | T10 | "Configura conversão de WhatsApp no Google Ads" | new-campaign etapa 5 |
+| T11 | "Lista meus perfis de clínica no Google Ads" | profiles |
+| T12 | "Cria perfil da minha clínica com teto de R$ 2.000" | profiles criar |
+| T13 | "Atualiza o teto padrão do perfil da clínica" | profiles atualizar |
 
 ### Não deve disparar (outros skills / genérico)
 
@@ -209,6 +215,7 @@ Use para testar se o skill dispara quando deve e fica quieto quando não deve.
 4. Pede **confirmação** antes de pausar/remover (T6).
 5. Não inventa dados do negócio (T4 — pede info ou usa só confirmado).
 6. Roteia para reference certa (implícito no comportamento).
+7. Lista perfis existentes antes de campanha quando aplicável (T1, T11).
 
 **Fail** quando:
 
@@ -217,6 +224,7 @@ Use para testar se o skill dispara quando deve e fica quieto quando não deve.
 - Aceita recomendação Google que aumenta orçamento sem autorização.
 - Responde só "Pronto" após execução.
 - Dispara skill em F1–F6.
+- Remove perfil sem confirmação.
 
 ### Roteiro rápido de eval manual
 
@@ -232,7 +240,49 @@ Registrar taxa: **trigger precision** (F1–F6 não disparam) e **trigger recall
 
 ---
 
-## 5. Anti-padrões (não fazer)
+## 5. Perfis persistentes
+
+### Prompt — sessão com perfis existentes
+
+> Quero criar uma campanha no Google Ads.
+
+### Resposta esperada (primeira ação)
+
+1. Listar `~/.config/google-ads/profiles/*.md`.
+2. Se houver perfis, exibir tabela resumida e perguntar qual negócio usar (ou criar novo / sem perfil).
+3. Só depois iniciar coleta ou campanha.
+
+### Prompt — criar perfil manual
+
+> Salva um perfil: Clínica Bella Vita, estética, São Paulo, site bellavita.com.br, teto R$ 2.000/mês, WhatsApp 11 99999-0000, objetivo leads WhatsApp.
+
+### Resposta esperada
+
+1. Confirmar dados; classificar como **confirmado** (usuário).
+2. Criar `clinica-bella-vita.md` em `~/.config/google-ads/profiles/`.
+3. Mostrar resumo do que foi salvo e caminho do arquivo.
+
+### Prompt — primeira campanha sem perfil
+
+> (após entrega de campanha proposta ou publicação)
+
+### Resposta esperada
+
+Oferecer: *Deseja salvar um perfil com as informações confirmadas desta campanha para usar nas próximas sessões?*
+
+Se sim → criar arquivo; se não → seguir sem salvar.
+
+### Prompt — remover perfil
+
+> Remove o perfil da Bella Vita.
+
+### Resposta esperada
+
+Formato **o quê → impacto → confirmação**. Só deletar após autorização explícita.
+
+---
+
+## 6. Anti-padrões (não fazer)
 
 | Anti-padrão | Correto |
 |---|---|
@@ -242,3 +292,5 @@ Registrar taxa: **trigger precision** (F1–F6 não disparam) e **trigger recall
 | Copiar anúncio de concorrente | Inteligência de mercado só |
 | Imagem gerada sem perguntar ao usuário | [Imagens — processo obrigatório](./references/creatives.md#imagens) |
 | "Pronto, campanha no ar" sem detalhes | [Formato pós-execução](./references/reports.md#pos-execucao) |
+| Salvar perfil no workspace do projeto | `~/.config/google-ads/profiles/` |
+| Pular seleção de perfil quando existem vários | Listar e perguntar sempre |
