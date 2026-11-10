@@ -11,8 +11,13 @@ Agent Skills for coding agents (Cursor, Claude Code, Codex, OpenCode, and more).
 | [`django-superpowers`](./django-superpowers) | Django 5.0+ development: models, views, forms, URLs, admin, auth, security, testing, async, version features (5.0–6.0), plus DRF, SimpleJWT, django-allauth, django-environ, Celery, and Channels. |
 | [`django-unfold`](./django-unfold) | Django Unfold admin theme: install, UNFOLD settings, ModelAdmin, filters, actions, tabs, inlines, widgets, dashboards, third-party integrations, and troubleshooting. |
 | [`google-ads`](./google-ads) | Google Ads end-to-end: campaigns, ad groups, keywords, assets, budget, conversions, optimization, reports, and persistent business profiles (clinic, site, default budget). Local businesses and aesthetics clinics; browser-first platform operations. **Portuguese (Brazil) skill** — agent interactions, reports, and ad copy are in pt-BR. |
+| [`redacao-tecnica-ste`](./redacao-tecnica-ste) | Controlled technical writing in Brazilian Portuguese, adapted from ASD-STE100: approved vocabulary, active voice, sentence limits, procedures, safety notices, and an automatic checker. **Portuguese (Brazil) skill.** |
 | [`security-check`](./security-check) | Security review of code, APIs, infrastructure, or architecture against OWASP Top 10, CWE Top 25, and secure coding practices. DREAD/CVSS severity, remediation guidance — language and framework agnostic. Covers injection, auth, JWT/OAuth, GraphQL, cloud/IaC, and threat modeling. |
 | [`trello`](./trello) | Trello REST API (boards, lists, cards, checklists, members, labels, webhooks, and more) via `curl` / PowerShell wrappers and env-based credentials. |
+
+## Compatibility
+
+Skills follow the open Agent Skills format (`SKILL.md` plus supporting files) and install through the `skills` CLI into any supported agent: Claude Code, Cursor, Codex, OpenCode, Gemini CLI, GitHub Copilot, and others. Paths are relative to each skill's directory. Agent-specific features, such as subagents or slash commands, are optional and have a fallback. Some skills run helper scripts: `trello` needs `curl` or PowerShell, and the `redacao-tecnica-ste` checker needs Python 3.
 
 ## Installation
 
@@ -63,3 +68,10 @@ npx skills add silasvasconcelos/skills --all
 | `npx skills update` | Update installed skills. `-g` / `-p` limit scope; `-y` skips prompts. |
 | `npx skills remove <name>` | Remove a skill (`rm`). `-a`, `-g`, `--all` work like `add`. |
 | `npx skills find [query]` | Search the skills ecosystem ([skills.sh](https://skills.sh)). |
+
+## Adding a skill
+
+1. Create `<skill-name>/SKILL.md` at the repository root. `name` in the frontmatter must equal the folder name (lowercase letters, digits, and hyphens; max 64 characters).
+2. Write a `description` of at most 1024 characters that says what the skill does and when to use it.
+3. Keep paths relative to the skill's directory and avoid tools that exist in only one agent, or give a fallback.
+4. Run `npx -y skills add . --list` and add the skill to the table above.
