@@ -24,11 +24,11 @@ If user or project git rules conflict with this skill, follow the stricter rule.
 
 ## User input
 
-```text
-$ARGUMENTS
-```
+Before proceeding, read the arguments from the user's request: anything after `/commit`, or the same flags and instructions in plain language where the agent has no slash commands. User may specify flags, scope filters, custom messages, or files to include/exclude.
 
-Consider `$ARGUMENTS` before proceeding. User may specify scope filters, custom messages, or files to include/exclude.
+Claude Code fills in the arguments on the next line; other agents ignore it.
+
+$ARGUMENTS
 
 ## Flags
 
