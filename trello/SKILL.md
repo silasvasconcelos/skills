@@ -9,6 +9,12 @@ Cross-platform client for the **Trello REST API** (`https://api.trello.com/1`).
 It covers every endpoint in the official spec, grouped by resource, and runs the
 same way on macOS, Linux, and Windows.
 
+## Paths
+
+All `scripts/…` and `references/…` paths in this skill are relative to the skill's own
+directory (the folder containing this `SKILL.md`), not the user's project. Prefix them
+with that directory, or run the commands from it.
+
 ## Prerequisites: credentials
 
 All requests authenticate with two values pulled from environment variables:
