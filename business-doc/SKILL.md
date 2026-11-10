@@ -1,6 +1,6 @@
 ---
 name: business-doc
-description: Generates business (non-technical) documentation from an existing codebase. Organizes by feature/user story, includes Mermaid flows, glossary, business rules, KPIs, integrations, compliance, and open questions. Supports parallel analysis with subagents. With the `--features` flag, generates one self-contained document per identified feature following the `feature.md` template (filename = feature name). With the `--frs` flag, generates Software Requirements documentation (RF/RNF) instead — one document per feature — and can convert existing business documentation to FRS via `--frs --from-existing={path}`. The `--language` flag (default `en`) controls the output language.
+description: Generates business (non-technical) documentation from an existing codebase. Organizes by feature/user story, includes Mermaid flows, glossary, business rules, KPIs, integrations, compliance, and open questions. Supports parallel analysis with subagents. With the `--features` flag, generates one self-contained document per identified feature following the `feature.md` template (filename = feature name). With the `--frs` flag, generates Software Requirements documentation (RF/RNF) instead — one document per feature — and can convert existing business documentation to FRS via `--frs --from-existing={path}`. The `--language` flag (default `en`) controls the output language. Use when the user asks to document a codebase for business stakeholders, map features and business rules, or produce software requirements (RF/RNF).
 ---
 
 # Skill: business-doc
@@ -252,12 +252,16 @@ If `--use-subagents=N` and `N > 0`:
 
 If `--use-subagents=0`: generate serially, one feature at a time.
 
-**Base prompt** for the subagent (use when dispatching via `Task` with `subagent_type=explore` or `generalPurpose`):
+Use the agent's subagent or parallel-task mechanism if it has one. If it has none, process the features serially, as with `--use-subagents=0`.
+
+`<skill-dir>` below is this skill's own directory (the folder containing this `SKILL.md`). Replace it with the resolved path in every subagent prompt.
+
+**Base prompt** for the subagent:
 
 > Generate **business** documentation for feature `<slug>` in the repository.
 > - Mode: `<business-only | with-technical-evidence>`.
 > - Output: `{output}/features/<slug>/` with `README.md`, `user-stories.md`, `use-cases.md`, `business-rules.md`, `flows.md`, `examples.md`.
-> - Use templates in `.cursor/skills/business-doc/templates/`.
+> - Use templates in `<skill-dir>/templates/`.
 > - Language: `<--language>` (default English), simple, no technical jargon.
 > - Include at least one Mermaid diagram in `flows.md`.
 > - Mark each statement as Fact / Hypothesis / Question.
@@ -280,7 +284,7 @@ If `--use-subagents=0`: generate serially, one feature at a time.
 
   > Generate the **per-feature** business document for feature `<feature-name>`.
   > - Mode: `<business-only | with-technical-evidence>`.
-  > - Single output: `{output}/features/<feature-name>.md` using template `.cursor/skills/business-doc/templates/feature.md`.
+  > - Single output: `{output}/features/<feature-name>.md` using template `<skill-dir>/templates/feature.md`.
   > - The file name **is** the feature name (`kebab-case`).
   > - Fill **all** template sections with the identified feature: overview, objectives, actors, AS-IS, TO-BE, business rules, use cases, data model, configurable domains, RNFs, out of scope, glossary, references.
   > - Include at least one diagram (Mermaid or ASCII) in the AS-IS/TO-BE sections.
@@ -305,7 +309,7 @@ If `--use-subagents=0`: generate serially, one feature at a time.
   > Generate the **FRS** (Functional Requirements Specification) for feature `<slug>`.
   > - Mode: `<business-only | with-technical-evidence>`.
   > - Source: `<code | {from-existing}/features/<slug>/>`.
-  > - Single output: `{output}/features/<slug>/frs.md` using template `.cursor/skills/business-doc/templates/frs.md`.
+  > - Single output: `{output}/features/<slug>/frs.md` using template `<skill-dir>/templates/frs.md`.
   > - Each RF must be atomic, testable, with Gherkin acceptance criteria.
   > - Each RNF must have a numeric metric and verification method.
   > - Mandatory priority: MoSCoW (RF) and Critical/High/Medium/Low (RNF).
@@ -374,7 +378,7 @@ Right after the header, one **Confidence** line: `High | Medium | Low` — based
 
 ## Templates
 
-Templates live in `.cursor/skills/business-doc/templates/`:
+Templates live in `templates/`, relative to this skill's directory:
 
 - `feature.md` — used **only** in `--features` mode (one self-contained document per feature; filename = feature name).
 - `feature-readme.md`
