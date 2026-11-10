@@ -65,7 +65,7 @@ Copy full settings from [templates/settings-unfold.py.tpl](templates/settings-un
 
 1. Create `templates/admin/index.html` extending `admin/base.html`.
 2. Set `UNFOLD["DASHBOARD_CALLBACK"]` to inject context variables.
-3. Use `{% load unfold %}` and `{% component %}` tags (see [references/components.md](references/components.md)).
+3. Use `{% load unfold %}` and `{% component %}` tags (see [references/widgets-components.md](references/widgets-components.md)).
 4. For custom Tailwind classes, compile project-level CSS (see [references/configuration.md](references/configuration.md#dashboard--tailwind)).
 
 ### Enhanced changelist
